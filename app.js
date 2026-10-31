@@ -195,7 +195,8 @@ async function runCheck() {
   const btn = $('checkBtn');
   btn.disabled = true;
   out.textContent = 'Проверяю…';
-  const online = await reachable('www.google.com');
+  // Интернет есть, если открывается хоть один обычный сайт.
+  const online = (await Promise.all(['www.google.com', 'ya.ru', 'www.apple.com'].map(reachable))).some(Boolean);
   if (!online) {
     out.innerHTML = '<div class="big no">Нет интернета</div>Подключись к сети и попробуй снова.';
     btn.disabled = false;
