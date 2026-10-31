@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Антилудо">
+<meta name="theme-color" content="#f2f5f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121518" media="(prefers-color-scheme: dark)">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="style.css">
+<title>Антилудо</title>
+</head>
+<body>
+
+<main>
+  <!-- Главная -->
+  <section class="view active" id="view-home">
+    <div id="protBanner"></div>
+
+    <div class="card setup" id="setup" hidden>
+      <h2>Начнём</h2>
+      <label>С какого дня не играешь
+        <input type="date" id="sStart">
+      </label>
+      <label>Сколько примерно уходило на игру в день, ₽
+        <input id="sPerDay" inputmode="decimal" placeholder="например, 1000">
+      </label>
+      <button type="button" class="primary wide-btn" id="sSave">Готово</button>
+    </div>
+
+    <div class="streak" id="streak">
+      <small>Без игры</small>
+      <div class="days" id="days">0</div>
+      <div class="days-word" id="daysWord">дней</div>
+      <div class="saved" id="saved"></div>
+      <div class="best" id="best"></div>
+    </div>
+
+    <button type="button" class="sos" id="sosBtn">Хочется играть</button>
+
+    <div class="card">
+      <h3>Зачем я это делаю</h3>
+      <ul class="reasons" id="reasons"></ul>
+      <form class="row" id="reasonForm">
+        <input id="reasonInput" placeholder="Добавить причину" aria-label="Новая причина">
+        <button type="submit" class="primary">+</button>
+      </form>
+    </div>
+
+    <button type="button" class="link-btn" id="slipBtn">Я сорвался</button>
+  </section>
+
+  <!-- Защита -->
+  <section class="view" id="view-protect">
+    <h2>Блокировка казино</h2>
+    <div class="card">
+      <div id="checkResult" class="check-result">Нажми «Проверить», чтобы узнать, блокируются ли казино на этом телефоне.</div>
+      <button type="button" class="primary wide-btn" id="checkBtn">Проверить</button>
+    </div>
+
+    <div class="card">
+      <h3>Как включить (10 минут, один раз)</h3>
+      <ol class="steps">
+        <li>Дай телефон близкому — пусть сам придумает <b>пароль на удаление</b> и впишет ниже. Ты его знать не должен.</li>
+        <li>Нажми «Скачать профиль» → «Разрешить».</li>
+        <li>Настройки → <b>«Профиль загружен»</b> → Установить → код телефона → Установить.</li>
+        <li>Вернись сюда и нажми «Проверить».</li>
+      </ol>
+      <p class="hint">Фильтр твой собственный: 620 тысяч сайтов казино и букмекеров, список обновляется.</p>
+    </div>
+
+    <form class="card" id="profileForm">
+      <h3>Профиль защиты</h3>
+      <label>Пароль на удаление (вводит близкий)
+        <input id="pPass" type="password" autocomplete="new-password">
+      </label>
+      <button type="submit" class="primary wide-btn">Скачать профиль</button>
+      <p class="hint" id="pHint">Открывай в Safari (не с экрана «Домой»), иначе iPhone не даст установить профиль.</p>
+    </form>
+
+    <div class="card">
+      <h3>Ещё сильнее</h3>
+      <ul class="tips">
+        <li><b>Экранное время</b> → код-пароль вводит близкий → Контент и конфиденциальность → Приложения <b>12+</b> (приложения казино пропадут).</li>
+        <li>Если есть <b>Частный узел iCloud</b> — выключи, он обходит фильтр.</li>
+        <li>В приложении банка поищи <b>запрет операций в казино и ставках</b>.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Помощь -->
+  <section class="view" id="view-help">
+    <h2>Поддержка</h2>
+    <div class="card">
+      <h3>Близкий человек</h3>
+      <p class="hint">Ему можно позвонить одной кнопкой, когда тянет играть.</p>
+      <label>Имя <input id="hName" autocomplete="off"></label>
+      <label>Телефон <input id="hPhone" type="tel" inputmode="tel" autocomplete="off"></label>
+    </div>
+    <div class="card">
+      <h3>Куда обратиться</h3>
+      <ul class="tips">
+        <li><b>«Анонимные Игроки»</b> — бесплатные анонимные группы, есть онлайн. Поиск: «Анонимные Игроки» + твой город.</li>
+        <li><b>Психотерапевт</b> в государственном диспансере — бесплатно и анонимно.</li>
+        <li><b>Психологическая помощь МЧС</b>, круглосуточно: <a href="tel:+74959895050">8 (495) 989-50-50</a></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Это нормально</h3>
+      <p class="hint">Тяга приходит волнами и проходит за 15–20 минут, если её переждать. Срыв — не конец, а часть пути. Главное — вернуться.</p>
+    </div>
+  </section>
+</main>
+
+<!-- Режим «Хочется играть» -->
+<div class="sos-screen" id="sosScreen" hidden>
+  <div class="sos-inner">
+    <div class="timer" id="timer">15:00</div>
+    <p class="sos-text">Тяга пройдёт. Просто дыши и подожди.</p>
+    <div class="breath"><div class="circle" id="circle"></div><span id="breathWord">Вдох</span></div>
+    <ul class="reasons sos-reasons" id="sosReasons"></ul>
+    <a class="primary wide-btn call" id="callBtn" hidden>Позвонить</a>
+    <button type="button" class="ghost wide-btn" id="sosDone">Тяга прошла</button>
+  </div>
+</div>
+
+<nav class="tabs">
+  <button type="button" data-view="home" class="active">Главная</button>
+  <button type="button" data-view="protect">Защита</button>
+  <button type="button" data-view="help">Помощь</button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
