@@ -84,7 +84,7 @@ function renderBanner() {
   if (c && c.protected) { b.innerHTML = ''; return; }
   b.innerHTML = '<div class="banner bad">' +
     (c ? 'Казино на этом телефоне не блокируются.' : 'Блокировка казино ещё не проверена.') +
-    ' <a href="#" id="goProtect">Включить защиту →</a></div>';
+    ' <a href="#" id="goProtect">Проверить →</a></div>';
   $('goProtect').onclick = (e) => { e.preventDefault(); show('protect'); };
 }
 
