@@ -218,58 +218,16 @@ async function runCheck() {
 $('checkBtn').onclick = runCheck;
 
 // ---------- Профиль защиты (.mobileconfig) ----------
-function uuid() {
-  const b = crypto.getRandomValues(new Uint8Array(16));
-  b[6] = (b[6] & 0x0f) | 0x40;
-  b[8] = (b[8] & 0x3f) | 0x80;
-  const h = Array.from(b, (x) => x.toString(16).padStart(2, '0')).join('');
-  return (h.slice(0, 8) + '-' + h.slice(8, 12) + '-' + h.slice(12, 16) + '-' + h.slice(16, 20) + '-' + h.slice(20)).toUpperCase();
-}
-const xml = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' }[c]));
-
-function buildProfile(pass) {
-  const id = 'filter';
-  const dns =
-    '<dict>' +
-    '<key>PayloadType</key><string>com.apple.dnsSettings.managed</string>' +
-    '<key>PayloadIdentifier</key><string>ludo.anti.dns.' + id + '</string>' +
-    '<key>PayloadUUID</key><string>' + uuid() + '</string>' +
-    '<key>PayloadVersion</key><integer>1</integer>' +
-    '<key>PayloadDisplayName</key><string>Блокировка казино</string>' +
-    '<key>DNSSettings</key><dict>' +
-    '<key>DNSProtocol</key><string>HTTPS</string>' +
-    '<key>ServerURL</key><string>' + FILTER_URL + '</string>' +
-    '</dict>' +
-    '</dict>';
-  const lock = pass
-    ? '<dict>' +
-      '<key>PayloadType</key><string>com.apple.profileRemovalPassword</string>' +
-      '<key>PayloadIdentifier</key><string>ludo.anti.lock.' + id + '</string>' +
-      '<key>PayloadUUID</key><string>' + uuid() + '</string>' +
-      '<key>PayloadVersion</key><integer>1</integer>' +
-      '<key>RemovalPassword</key><string>' + xml(pass) + '</string>' +
-      '</dict>'
-    : '';
-  return '<?xml version="1.0" encoding="UTF-8"?>\n' +
-    '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n' +
-    '<plist version="1.0"><dict>' +
-    '<key>PayloadType</key><string>Configuration</string>' +
-    '<key>PayloadIdentifier</key><string>ludo.anti.' + id + '</string>' +
-    '<key>PayloadUUID</key><string>' + uuid() + '</string>' +
-    '<key>PayloadVersion</key><integer>1</integer>' +
-    '<key>PayloadDisplayName</key><string>Антилудо — блокировка казино</string>' +
-    '<key>PayloadDescription</key><string>Блокирует сайты казино и букмекеров.</string>' +
-    '<key>PayloadContent</key><array>' + dns + lock + '</array>' +
-    '</dict></plist>\n';
-}
-
+// Профиль собирает сервер фильтра: iPhone ставит профиль только из обычной
+// загрузки с сервера. Пароль уходит в теле POST-запроса и нигде не хранится.
+$('profileForm').action = FILTER_URL.replace('/dns-query', '/profile');
 $('profileForm').onsubmit = (e) => {
-  e.preventDefault();
-  const pass = $('pPass').value;
-  if (!pass && !confirm('Без пароля профиль можно будет удалить в любой момент. Всё равно скачать?')) return;
-  const data = 'data:application/x-apple-aspen-config;charset=utf-8,' + encodeURIComponent(buildProfile(pass));
-  $('pPass').value = '';
-  location.href = data;
+  if (navigator.standalone) {
+    e.preventDefault();
+    toast('Открой этот сайт в Safari — с экрана «Домой» iPhone не даёт ставить профили');
+    return;
+  }
+  if (!$('pPass').value && !confirm('Без пароля профиль можно будет удалить в любой момент. Всё равно скачать?')) e.preventDefault();
 };
 
 // ---------- Помощь ----------
