@@ -220,7 +220,6 @@ $('checkBtn').onclick = runCheck;
 // ---------- Профиль защиты (.mobileconfig) ----------
 // Профиль собирает сервер фильтра: iPhone ставит профиль только из обычной
 // загрузки с сервера. Пароль уходит в теле POST-запроса и нигде не хранится.
-$('profileForm').action = FILTER_URL.replace('/dns-query', '/profile');
 $('profileForm').onsubmit = (e) => {
   if (navigator.standalone) {
     e.preventDefault();
