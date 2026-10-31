@@ -217,18 +217,6 @@ async function runCheck() {
 }
 $('checkBtn').onclick = runCheck;
 
-// ---------- Профиль защиты (.mobileconfig) ----------
-// Профиль собирает сервер фильтра: iPhone ставит профиль только из обычной
-// загрузки с сервера. Пароль уходит в теле POST-запроса и нигде не хранится.
-$('profileForm').onsubmit = (e) => {
-  if (navigator.standalone) {
-    e.preventDefault();
-    toast('Открой этот сайт в Safari — с экрана «Домой» iPhone не даёт ставить профили');
-    return;
-  }
-  if (!$('pPass').value && !confirm('Без пароля профиль можно будет удалить в любой момент. Всё равно скачать?')) e.preventDefault();
-};
-
 // ---------- Помощь ----------
 $('hName').value = state.name;
 $('hPhone').value = state.phone;
